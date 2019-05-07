@@ -4,10 +4,10 @@ dal = Dal()
 def IsUp(datas, lastData = 10000):
     max1, max2, max3 = 0,0,0
     if len(datas) >= 3:
-        skipCount = len(datas) // 3
-        max1 = max(datas[:skipCount])
-        max2 = max(datas[skipCount:skipCount*2])
-        max3 = max(datas[skipCount*2:])
+        #skipCount = len(datas) // 3
+        max1 = datas[-1]
+        max2 = datas[-2]
+        max3 = datas[-3]
         if max3 >= max2 and max3 > max1 and lastData > max1 and lastData > max2:
             return True
     return False
@@ -25,5 +25,4 @@ originDatas = dal.GetEveryDayDataByCode("600410")
 datas = [ ClosePrice for StockCode,CurrentDate,OpenPrice,HighPrice,ClosePrice,LowPrice,Volume,Price_Change,P_Change,Ma5,Ma10,Ma20,V_Ma5,V_Ma10,V_Ma20,Turnover in originDatas]
 topPoints = GetTopPoint(datas)
 isUp = IsUp(topPoints, datas[-1])
-print(datas[-1])
 print(isUp)
