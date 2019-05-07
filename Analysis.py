@@ -20,9 +20,19 @@ def GetTopPoint(datas):
             result.append(newDatas[i])
     return result
 
-originDatas = dal.GetEveryDayDataByCode("600410")
-##datas = [14, 16, 15, 18, 12, 11, 14, 12, 18, 15, 22, 17, 19, 21, 21, 19, 18, 21, 19, 23,24,21,19,20,23]
-datas = [ ClosePrice for StockCode,CurrentDate,OpenPrice,HighPrice,ClosePrice,LowPrice,Volume,Price_Change,P_Change,Ma5,Ma10,Ma20,V_Ma5,V_Ma10,V_Ma20,Turnover in originDatas]
-topPoints = GetTopPoint(datas)
-isUp = IsUp(topPoints, datas[-1])
-print(isUp)
+index = 1
+stocks = dal.GetAllStock()
+result = []
+for stockCode,_ in stocks:   
+    originDatas = dal.GetEveryDayDataByCode(stockCode)
+    ##datas = [14, 16, 15, 18, 12, 11, 14, 12, 18, 15, 22, 17, 19, 21, 21, 19, 18, 21, 19, 23,24,21,19,20,23]
+    datas = [ ClosePrice for StockCode,CurrentDate,OpenPrice,HighPrice,ClosePrice,LowPrice,Volume,Price_Change,P_Change,Ma5,Ma10,Ma20,V_Ma5,V_Ma10,V_Ma20,Turnover in originDatas]
+    if len(datas) > 0 and datas[-1] < 20:
+        topPoints = GetTopPoint(datas)
+        isUp = IsUp(topPoints, datas[-1])
+        if isUp:
+            result.append(stockCode)
+    print('已处理完{0}/{1}，结果：{2}'.format(index,len(stocks),isUp))
+    index += 1
+print(result)
+    

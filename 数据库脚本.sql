@@ -97,5 +97,12 @@ create procedure StockAnalysis_EveryDayData_ReadByCode(
 	v_StockCode	varchar(20)
 )
 begin
-	select * from everydaydata where StockCode = v_StockCode;
+	select * from everydaydata where StockCode = v_StockCode order by CurrentDate asc;
+end$$
+
+
+drop procedure if exists StockAnalysis_EveryDayData_ReadAll$$
+create procedure StockAnalysis_EveryDayData_ReadAll()
+begin
+	select * from everydaydata;
 end$$

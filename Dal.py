@@ -14,6 +14,9 @@ class Dal:
     def GetEveryDayDataByCode(self,stockCode):
         return self.sqlHelper.Call('StockAnalysis_EveryDayData_ReadByCode',stockCode)
 
+    def GetAllEveryDayData(self):
+        return self.sqlHelper.Call('StockAnalysis_EveryDayData_ReadAll')
+
     def SaveEveryDayData(self,StockCode,CurrentDate,OpenPrice,HighPrice,ClosePrice,LowPrice,Volume,Price_Change,P_Change,Ma5,Ma10,Ma20,V_Ma5,V_Ma10,V_Ma20,Turnover):
         return self.sqlHelper.Call('StockAnalysis_EveryDayData_Save',StockCode,CurrentDate,OpenPrice,HighPrice,ClosePrice,LowPrice,Volume,Price_Change,P_Change,Ma5,Ma10,Ma20,V_Ma5,V_Ma10,V_Ma20,Turnover)
 
