@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.489
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockAnalysis", "StockAnalysis\StockAnalysis.csproj", "{F63C7560-A4AF-4675-9B29-D3009B328B32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{35C43C6A-20D2-452F-9C00-96C90D3F3792}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F63C7560-A4AF-4675-9B29-D3009B328B32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F63C7560-A4AF-4675-9B29-D3009B328B32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F63C7560-A4AF-4675-9B29-D3009B328B32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F63C7560-A4AF-4675-9B29-D3009B328B32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35C43C6A-20D2-452F-9C00-96C90D3F3792}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35C43C6A-20D2-452F-9C00-96C90D3F3792}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35C43C6A-20D2-452F-9C00-96C90D3F3792}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35C43C6A-20D2-452F-9C00-96C90D3F3792}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6CCE6092-3A3C-4570-B5DF-201178E0B6A0}
+	EndGlobalSection
+EndGlobal
