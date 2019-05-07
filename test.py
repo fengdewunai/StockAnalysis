@@ -2,9 +2,7 @@
 import Business as bs
 
 
-# 插入股票代码
-# bs.InsertStockData("data/上证股票代码.txt")
-# bs.InsertStockData("data/深证股票代码.txt")
+
 # sqlHelper = SqlHelper()
 
 bs.UpdateAllStockData()
