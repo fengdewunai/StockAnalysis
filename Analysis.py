@@ -32,7 +32,7 @@ for stockCode,_ in stocks:
         isUp = IsUp(topPoints, datas[-1])
         if isUp:
             result.append(stockCode)
-    print('已处理完{0}/{1}，结果：{2}'.format(index,len(stocks),isUp))
+    print('已处理完{0}/{1}，结果：{2}，已筛选：{3}'.format(index,len(stocks),isUp,result))
     index += 1
 print(result)
     
