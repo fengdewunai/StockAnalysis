@@ -48,7 +48,7 @@ namespace StockAnalysis
                 max2 = datas[datas.Count - 2].ClosePrice;
                 max3 = datas[datas.Count - 3].ClosePrice;
             }
-            if (max1 >= max2 && max2 > max3 && lastData1.ClosePrice > max1 && lastData2.ClosePrice < max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
+            if (max1 >= max2 && max3 > max2 && lastData1.ClosePrice > max1 && lastData2.ClosePrice < max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
             {
                 return true;
             }
