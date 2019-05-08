@@ -1,0 +1,15 @@
+E:\StockAnalysis\C#\StockAnalysis\Common\bin\Debug\Common.dll
+E:\StockAnalysis\C#\StockAnalysis\Common\bin\Debug\Common.pdb
+E:\StockAnalysis\C#\StockAnalysis\Common\bin\Debug\log4net.dll
+E:\StockAnalysis\C#\StockAnalysis\Common\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+E:\StockAnalysis\C#\StockAnalysis\Common\bin\Debug\MySql.Data.dll
+E:\StockAnalysis\C#\StockAnalysis\Common\bin\Debug\RuanYun.Logger.dll
+E:\StockAnalysis\C#\StockAnalysis\Common\bin\Debug\log4net.xml
+E:\StockAnalysis\C#\StockAnalysis\Common\obj\Debug\Common.csprojAssemblyReference.cache
+E:\StockAnalysis\C#\StockAnalysis\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+E:\StockAnalysis\C#\StockAnalysis\Common\obj\Debug\Common.csproj.CopyComplete
+E:\StockAnalysis\C#\StockAnalysis\Common\obj\Debug\Common.dll
+E:\StockAnalysis\C#\StockAnalysis\Common\obj\Debug\Common.pdb
+E:\StockAnalysis\C#\StockAnalysis\Common\bin\Debug\Newtonsoft.Json.dll
+E:\StockAnalysis\C#\StockAnalysis\Common\bin\Debug\Newtonsoft.Json.xml
+E:\StockAnalysis\C#\StockAnalysis\Common\bin\Debug\Common.dll.config
