@@ -86,23 +86,26 @@ begin
 end$$
 
 
-drop procedure if exists StockAnalysis_EveryDayData_Read$$
-create procedure StockAnalysis_EveryDayData_Read()
-begin
-	select * from everydaydata;
-end$$
-
 drop procedure if exists StockAnalysis_EveryDayData_ReadByCode$$
 create procedure StockAnalysis_EveryDayData_ReadByCode(
 	v_StockCode	varchar(20)
 )
 begin
-	select * from everydaydata where StockCode = v_StockCode order by CurrentDate asc;
+	select StockCode,CurrentDate,OpenPrice,HighPrice,ClosePrice,LowPrice,Volume,Price_Change,P_Change,Ma5,Ma10,Ma20,V_Ma5,V_Ma10,V_Ma20,Turnover from everydaydata where StockCode = v_StockCode order by CurrentDate asc;
 end$$
 
 
 drop procedure if exists StockAnalysis_EveryDayData_ReadAll$$
 create procedure StockAnalysis_EveryDayData_ReadAll()
 begin
-	select * from everydaydata;
+	select StockCode,CurrentDate,OpenPrice,HighPrice,ClosePrice,LowPrice,Volume,Price_Change,P_Change,Ma5,Ma10,Ma20,V_Ma5,V_Ma10,V_Ma20,Turnover from everydaydata;
+end$$
+
+drop procedure if exists StockAnalysis_EveryDayData_ReadByDate$$
+create procedure StockAnalysis_EveryDayData_ReadByDate(
+	v_StartDate	varchar(20),
+    v_EndDate	varchar(20)
+)
+begin
+	select StockCode,CurrentDate,OpenPrice,HighPrice,ClosePrice,LowPrice,Volume,Price_Change,P_Change,Ma5,Ma10,Ma20,V_Ma5,V_Ma10,V_Ma20,Turnover from everydaydata where CurrentDate >= v_StartDate and CurrentDate <= v_EndDate and ClosePrice < 20 order by CurrentDate asc;
 end$$

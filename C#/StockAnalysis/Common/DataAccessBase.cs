@@ -14,6 +14,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using MySql.Data.MySqlClient;
+using RuanYun.Logger;
 
 namespace Common
 {
@@ -29,7 +30,7 @@ namespace Common
     {
         private const int TimeOut = 600;
         public IDbContext CurrentConnectStringContext;
-        private string connectionString = "";
+        private static string connectionString = ConfigurationManager.AppSettings.Get("ConfigDbPrefix");
 
         /// <summary>
         /// 默认的构造函数使用Config库
@@ -46,26 +47,21 @@ namespace Common
         /// <returns></returns>
         private IDbContext CreateMainContext()
         {
-            return _connectionStringType == ConnectionStringType.YunXuePingDbPrefix
-                       ? new DbContext().ConnectionStringName(_connectionStringType.ToString(), new MySqlProvider())
-                       : new DbContext().ConnectionString(
-                           ConnectionStringFactory.GetConnectionString(_connectionStringType), new MySqlProvider());
+            return new DbContext().ConnectionStringName("ConfigDbPrefix", new MySqlProvider());
         }
 
         /// <summary>
         ///  直接Bulk Load数据
         ///  只用于文件处理服务器的数据导入
         /// </summary>
-        /// <param name="connectionStringType"></param>
         /// <param name="fileName"></param>
         /// <param name="tableName"></param>
         /// <returns></returns>
-        public static int BulkLoadData(ConnectionStringType connectionStringType, string fileName, string tableName)
+        public static int BulkLoadData(string fileName, string tableName)
         {
-            string connectionString = ConnectionStringFactory.GetConnectionString(connectionStringType);
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-
+               
                 MySqlBulkLoader bl = new MySqlBulkLoader(conn);
                 bl.TableName = tableName;
                 bl.FileName = fileName;
@@ -86,14 +82,12 @@ namespace Common
         ///  批量插入数据
         ///  
         /// </summary>
-        /// <param name="connectionStringType"></param>
         /// <param name="table"></param>
         /// <param name="columnsName"></param>
         /// <returns></returns>
-        public static int BulkInsert(ConnectionStringType connectionStringType, DataTable table, List<string> columnsName = null)
+        public static int BulkInsert(DataTable table, List<string> columnsName = null)
         {
             if (string.IsNullOrEmpty(table.TableName)) throw new Exception("请给DataTable的TableName属性附上表名称");
-            string connectionString = ConnectionStringFactory.GetConnectionString(connectionStringType);
             string tmpPath = Path.GetTempFileName();
             string csv = DataTableToCsv(table);
             File.WriteAllText(tmpPath, csv);
@@ -125,14 +119,12 @@ namespace Common
         /// <summary>
         ///  批量更新数据
         /// </summary>
-        /// <param name="connectionStringType"></param>
         /// <param name="table"></param>
         /// <param name="columnsName"></param>
         /// <returns></returns>
-        public static int BulkUpdate(ConnectionStringType connectionStringType, DataTable table, List<string> columnsName = null)
+        public static int BulkUpdate(DataTable table, List<string> columnsName = null)
         {
             if (string.IsNullOrEmpty(table.TableName)) throw new Exception("请给DataTable的TableName属性附上表名称");
-            string connectionString = ConnectionStringFactory.GetConnectionString(connectionStringType);
             string tmpPath = Path.GetTempFileName();
             string csv = DataTableToCsv(table);
             File.WriteAllText(tmpPath, csv);
