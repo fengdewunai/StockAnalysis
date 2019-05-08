@@ -51,9 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExpectBll.cs" />
     <Compile Include="GetUpStock.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidateBll.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
