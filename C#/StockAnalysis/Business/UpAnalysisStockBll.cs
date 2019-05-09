@@ -23,136 +23,76 @@ namespace Business
             return result;
         }
 
-        public bool IsUp1(List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3)
+        public bool IsUp(List<EverydayData> topList, List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3, int typeId)
         {
+            var pChangeAverage = topList.Skip(Math.Max(0, topList.Count - 7)).Sum(x => x.P_Change);
             double max1 = 0, max2 = 0, max3 = 0;
-            if (datas.Count >= 3)
+            switch (typeId)
             {
-                max1 = datas[datas.Count - 1].ClosePrice;
-                max2 = datas[datas.Count - 2].ClosePrice;
-                max3 = datas[datas.Count - 3].ClosePrice;
+                case 1:
+                    
+                    if (topList.Count >= 3)
+                    {
+                        max1 = topList[topList.Count - 1].ClosePrice;
+                        max2 = topList[topList.Count - 2].ClosePrice;
+                        max3 = topList[topList.Count - 3].ClosePrice;
+                    }
+                    if (max1 >= max2 && max2 > max3 && lastData1.ClosePrice > max1 && lastData2.ClosePrice > max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
+                    {
+                        return true;
+                    }
+                    return false;
+                case 2:
+                    if (topList.Count >= 3)
+                    {
+                        max1 = topList[topList.Count - 1].ClosePrice;
+                        max2 = topList[topList.Count - 2].ClosePrice;
+                        max3 = topList[topList.Count - 3].ClosePrice;
+                    }
+                    if (max1 >= max2 && max1 > max3 && lastData1.ClosePrice > max1 && lastData2.ClosePrice > max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
+                    {
+                        return true;
+                    }
+                    return false;
+                case 3:
+                    if (topList.Count >= 3)
+                    {
+                        max1 = topList[topList.Count - 1].ClosePrice;
+                        max2 = topList[topList.Count - 2].ClosePrice;
+                        max3 = topList[topList.Count - 3].ClosePrice;
+                    }
+
+                    if (max1 >= max2 && max2 > max3 && lastData1.ClosePrice > max1 && lastData2.ClosePrice > max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
+                    {
+                        return true;
+                    }
+                    return false;
+                case 4:
+                    double volume1 = 0, volume2 = 0, volume3 = 0;
+                    if (topList.Count >= 3)
+                    {
+                        max1 = topList[topList.Count - 1].ClosePrice;
+                        volume1 = topList[topList.Count - 1].Volume;
+                        max2 = topList[topList.Count - 2].ClosePrice;
+                        volume2 = topList[topList.Count - 2].Volume;
+                        max3 = topList[topList.Count - 3].ClosePrice;
+                        volume3 = topList[topList.Count - 3].Volume;
+                    }
+                    var topAverage = (max1 + max2 + max3) / 3;
+                    if (CommonValidate(pChangeAverage) && lastData1.ClosePrice > topAverage && lastData2.ClosePrice < topAverage && lastData1.Volume > lastData2.Volume && pChangeAverage > 5 && pChangeAverage<12)
+                    {
+                        return true;
+                    }
+                    return false;
+                default:
+                    return false;
             }
-            if (max1 >= max2 && max2 > max3 && lastData1.ClosePrice > max1 && lastData2.ClosePrice > max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
-            {
-                return true;
-            }
-            return false;
+            
         }
 
-        public bool IsUp1_2(List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3)
+        private bool CommonValidate(double pChangeAverage)
         {
-            double max1 = 0, max2 = 0, max3 = 0;
-            if (datas.Count >= 3)
-            {
-                max1 = datas[datas.Count - 1].ClosePrice;
-                max2 = datas[datas.Count - 2].ClosePrice;
-                max3 = datas[datas.Count - 3].ClosePrice;
-            }
-            if (max1 >= max2 && max3 > max2 && lastData1.ClosePrice > max1 && lastData2.ClosePrice < max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public bool IsUp2(List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3)
-        {
-            double max1 = 0, max2 = 0, max3 = 0;
-            if (datas.Count >= 3)
-            {
-                max1 = datas[datas.Count - 1].ClosePrice;
-                max2 = datas[datas.Count - 2].ClosePrice;
-                max3 = datas[datas.Count - 3].ClosePrice;
-            }
-            if (max1 >= max2 && max1 > max3 && lastData1.ClosePrice > max1 && lastData2.ClosePrice > max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public bool IsUp2_2(List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3)
-        {
-            double max1 = 0, max2 = 0, max3 = 0;
-            if (datas.Count >= 3)
-            {
-                max1 = datas[datas.Count - 1].ClosePrice;
-                max2 = datas[datas.Count - 2].ClosePrice;
-                max3 = datas[datas.Count - 3].ClosePrice;
-            }
-            if (max1 >= max2 && max1 > max3 && lastData1.ClosePrice > max1 && lastData2.ClosePrice < max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public bool IsUp3(List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3)
-        {
-            double max1 = 0, max2 = 0, max3 = 0;
-            if (datas.Count >= 3)
-            {
-                max1 = datas[datas.Count - 1].ClosePrice;
-                max2 = datas[datas.Count - 2].ClosePrice;
-                max3 = datas[datas.Count - 3].ClosePrice;
-            }
-            if (max1 >= max2 && max2 > max3 && lastData1.ClosePrice > max1 && lastData2.ClosePrice > max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public bool IsUp3_2(List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3)
-        {
-            double max1 = 0, max2 = 0, max3 = 0;
-            if (datas.Count >= 3)
-            {
-                max1 = datas[datas.Count - 1].ClosePrice;
-                max2 = datas[datas.Count - 2].ClosePrice;
-                max3 = datas[datas.Count - 3].ClosePrice;
-            }
-            if (max1 >= max2 && max2 > max3 && lastData1.ClosePrice > max1 && lastData2.ClosePrice < max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public bool IsUp4(List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3)
-        {
-            double max1 = 0, max2 = 0, max3 = 0;
-            double volume1 = 0, volume2 = 0, volume3 = 0;
-            if (datas.Count >= 3)
-            {
-                max1 = datas[datas.Count - 1].ClosePrice;
-                volume1 = datas[datas.Count - 1].Volume;
-                max2 = datas[datas.Count - 2].ClosePrice;
-                volume2 = datas[datas.Count - 2].Volume;
-                max3 = datas[datas.Count - 3].ClosePrice;
-                volume3 = datas[datas.Count - 3].Volume;
-            }
-            if (lastData1.ClosePrice > max1 && lastData2.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public bool IsUp4_2(List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3)
-        {
-            double max1 = 0, max2 = 0, max3 = 0;
-            if (datas.Count >= 3)
-            {
-                max1 = datas[datas.Count - 1].ClosePrice;
-                max2 = datas[datas.Count - 2].ClosePrice;
-                max3 = datas[datas.Count - 3].ClosePrice;
-            }
-            if (lastData1.ClosePrice > max1 && lastData2.ClosePrice > max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
-            {
-                return true;
-            }
-            return false;
+            return pChangeAverage > 10 && pChangeAverage < 15;
         }
     }
 }

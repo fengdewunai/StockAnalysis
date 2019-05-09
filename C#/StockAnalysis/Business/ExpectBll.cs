@@ -15,66 +15,26 @@ namespace Business
         private List<string> allResult = new List<string>();
         public void Expect()
         {
-            var dal = new StockDal();
-            var startDate = DateTime.Now.AddDays(-60).ToString("yyyy-MM-dd");
+            var startDate = DateTime.Now.AddDays(-80).ToString("yyyy-MM-dd");
             var endDate = DateTime.Now.ToString("yyyy-MM-dd");
             var filePath = @"c:\ascii2.txt";
-            var allData = new List<EverydayData>();
-            if (!File.Exists(filePath))
-            {
-                allData = dal.GetEveryDayDataByDate(startDate, endDate);
-                File.WriteAllText(filePath, JsonConvert.SerializeObject(allData));
-            }
-            else
-            {
-                var fileStr = File.ReadAllText(filePath);
-                allData = JsonConvert.DeserializeObject<List<EverydayData>>(fileStr);
-            }
+            var allData = CommonBll.GetEverydayData(filePath, startDate, endDate);
             List<Task> tasks = new List<Task>();
-            var upStockBll = new UpAnalysisStockBll();
-            Console.WriteLine("IsUp1方法开始");
-            tasks.Add(Task.Factory.StartNew(() => { Analysis(allData, startDate, DateTime.Now.AddDays(0).ToString("yyyy-MM-dd"), 0, upStockBll.IsUp1); }));
+            for (int j = 1; j <= 4; j++)
+            {
+                var typeId = j;
+                tasks.Add(Task.Factory.StartNew(() => { Analysis(allData, startDate, DateTime.Now.ToString("yyyy-MM-dd"), 0, typeId); }));
+            }
             Task.WaitAll(tasks.ToArray());
-            tasks.Clear();
-            Console.WriteLine("IsUp1_2方法开始");
-            tasks.Add(Task.Factory.StartNew(() => { Analysis(allData, startDate, DateTime.Now.AddDays(0).ToString("yyyy-MM-dd"), 0, upStockBll.IsUp1_2); }));
-            Task.WaitAll(tasks.ToArray());
-            tasks.Clear();
-            Console.WriteLine("IsUp2方法开始");
-            tasks.Add(Task.Factory.StartNew(() => { Analysis(allData, startDate, DateTime.Now.AddDays(0).ToString("yyyy-MM-dd"), 0, upStockBll.IsUp2); }));
-            Task.WaitAll(tasks.ToArray());
-            tasks.Clear();
-            Console.WriteLine("IsUp2_2方法开始");
-            tasks.Add(Task.Factory.StartNew(() => { Analysis(allData, startDate, DateTime.Now.AddDays(0).ToString("yyyy-MM-dd"), 0, upStockBll.IsUp2_2); }));
-            Task.WaitAll(tasks.ToArray());
-            tasks.Clear();
-            Console.WriteLine("IsUp3方法开始");
-            tasks.Add(Task.Factory.StartNew(() => { Analysis(allData, startDate, DateTime.Now.AddDays(0).ToString("yyyy-MM-dd"), 0, upStockBll.IsUp3); }));
-            Task.WaitAll(tasks.ToArray());
-            tasks.Clear();
-            Console.WriteLine("IsUp3_2方法开始");
-            tasks.Add(Task.Factory.StartNew(() => { Analysis(allData, startDate, DateTime.Now.AddDays(0).ToString("yyyy-MM-dd"), 0, upStockBll.IsUp3_2); }));
-            Task.WaitAll(tasks.ToArray());
-            tasks.Clear();
-            Console.WriteLine("IsUp4方法开始");
-            tasks.Add(Task.Factory.StartNew(() => { Analysis(allData, startDate, DateTime.Now.AddDays(0).ToString("yyyy-MM-dd"), 0, upStockBll.IsUp4); }));
-            Task.WaitAll(tasks.ToArray());
-            tasks.Clear();
-            Console.WriteLine("IsUp4_2方法开始");
-            tasks.Add(Task.Factory.StartNew(() => { Analysis(allData, startDate, DateTime.Now.AddDays(0).ToString("yyyy-MM-dd"), 0, upStockBll.IsUp4_2); }));
-            Task.WaitAll(tasks.ToArray());
-            tasks.Clear();
             var allResultGroup = allResult.GroupBy(x => x).OrderBy(x => x.ToList().Count);
             foreach (var resultGroup in allResultGroup)
             {
                 Console.WriteLine("code:{0},count:{1}", resultGroup.Key, resultGroup.ToList().Count);
             }
-
-
             Console.WriteLine("全部执行完成");
             Console.ReadLine();
         }
-        private void Analysis(List<EverydayData> allData, string startDate, string endDate, int reduceDay, Func<List<EverydayData>, EverydayData, EverydayData, EverydayData, bool> func)
+        private void Analysis(List<EverydayData> allData, string startDate, string endDate, int reduceDay, int analysisTypeId)
         {
             var result = new List<string>();
             var dataGroup = allData.GroupBy(x => x.StockCode);
@@ -88,7 +48,7 @@ namespace Business
                     var dataList = groupList.Take(groupList.Count - reduceDay).OrderBy(x => x.CurrentDate).ToList();
                     var analysisData = dataList;
                     var topList = upStockBll.GetTopPoint(analysisData);
-                    var isUp = func(topList, analysisData.Last(), analysisData[analysisData.Count - 2], analysisData[analysisData.Count - 3]);
+                    var isUp = upStockBll.IsUp(topList, analysisData, analysisData.Last(), analysisData[analysisData.Count - 2], analysisData[analysisData.Count - 3], analysisTypeId);
                     if (isUp)
                     {
                         result.Add(group.Key);

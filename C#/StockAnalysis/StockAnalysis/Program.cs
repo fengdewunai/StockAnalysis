@@ -16,10 +16,10 @@ namespace StockAnalysis
     {
         static void Main(string[] args)
         {
-            var expectBll = new ExpectBll();
-            expectBll.Expect();
+            //var expectBll = new ExpectBll();
+            //expectBll.Expect();
+            var validateBll = new ValidateBll();
+            validateBll.Validate();
         }
-
-
     }
 }
