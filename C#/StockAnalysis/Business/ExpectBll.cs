@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 using DataAccess;
 using Model;
 using Newtonsoft.Json;
-using RuanYun.Logger;
 
-namespace StockAnalysis
+namespace Business
 {
     public class ExpectBll
     {
@@ -32,7 +31,7 @@ namespace StockAnalysis
                 allData = JsonConvert.DeserializeObject<List<EverydayData>>(fileStr);
             }
             List<Task> tasks = new List<Task>();
-            var upStockBll = new GetUpStock();
+            var upStockBll = new UpAnalysisStockBll();
             Console.WriteLine("IsUp1方法开始");
             tasks.Add(Task.Factory.StartNew(() => { Analysis(allData, startDate, DateTime.Now.AddDays(0).ToString("yyyy-MM-dd"), 0, upStockBll.IsUp1); }));
             Task.WaitAll(tasks.ToArray());
@@ -80,7 +79,7 @@ namespace StockAnalysis
             var result = new List<string>();
             var dataGroup = allData.GroupBy(x => x.StockCode);
             var index = 1;
-            var upStockBll = new GetUpStock();
+            var upStockBll = new UpAnalysisStockBll();
             foreach (var group in dataGroup)
             {
                 try

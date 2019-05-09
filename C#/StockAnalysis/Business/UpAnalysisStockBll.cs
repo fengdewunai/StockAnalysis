@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Model;
 
-namespace StockAnalysis
+namespace Business
 {
-    public class GetUpStock
+    public class UpAnalysisStockBll
     {
         public List<EverydayData> GetTopPoint(List<EverydayData> datas)
         {
@@ -15,7 +15,7 @@ namespace StockAnalysis
             var newDatas = datas.Skip(Math.Max(0, datas.Count() - 30)).ToList();
             for (int i = 1; i < newDatas.Count - 1; i++)
             {
-                if(newDatas[i].ClosePrice > newDatas[i - 1].ClosePrice && newDatas[i].ClosePrice > newDatas[i + 1].ClosePrice)
+                if (newDatas[i].ClosePrice > newDatas[i - 1].ClosePrice && newDatas[i].ClosePrice > newDatas[i + 1].ClosePrice)
                 {
                     result.Add(newDatas[i]);
                 }
@@ -25,10 +25,10 @@ namespace StockAnalysis
 
         public bool IsUp1(List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3)
         {
-            double max1 =0,max2=0,max3 = 0;
+            double max1 = 0, max2 = 0, max3 = 0;
             if (datas.Count >= 3)
             {
-                max1 = datas[datas.Count-1].ClosePrice;
+                max1 = datas[datas.Count - 1].ClosePrice;
                 max2 = datas[datas.Count - 2].ClosePrice;
                 max3 = datas[datas.Count - 3].ClosePrice;
             }

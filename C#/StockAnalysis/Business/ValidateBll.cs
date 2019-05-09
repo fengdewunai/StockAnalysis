@@ -1,17 +1,17 @@
-﻿using DataAccess;
-using Model;
-using Newtonsoft.Json;
-using RuanYun.Logger;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccess;
+using Model;
+using Newtonsoft.Json;
+using RuanYun.Logger;
 
-namespace StockAnalysis
+namespace Business
 {
-    public class ValidateBll
+    class ValidateBll
     {
         private static List<string> allResult = new List<string>();
         public static void Validate()
@@ -32,7 +32,7 @@ namespace StockAnalysis
                 allData = JsonConvert.DeserializeObject<List<EverydayData>>(fileStr);
             }
             List<Task> tasks = new List<Task>();
-            var upStockBll = new GetUpStock();
+            var upStockBll = new UpAnalysisStockBll();
             Console.WriteLine("IsUp1方法开始");
             tasks.Add(Task.Factory.StartNew(() => { Analysis(allData, startDate, DateTime.Now.AddDays(0).ToString("yyyy-MM-dd"), 0, upStockBll.IsUp1); }));
             tasks.Add(Task.Factory.StartNew(() => { Analysis(allData, startDate, DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"), 1, upStockBll.IsUp1); }));
@@ -154,7 +154,7 @@ namespace StockAnalysis
             var result = new List<string>();
             var dataGroup = allData.GroupBy(x => x.StockCode);
             var index = 1;
-            var upStockBll = new GetUpStock();
+            var upStockBll = new UpAnalysisStockBll();
             foreach (var group in dataGroup)
             {
                 try
