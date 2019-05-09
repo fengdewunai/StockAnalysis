@@ -19,7 +19,7 @@ namespace Business
         {
             var startDate = DateTime.Now.AddDays(-80).ToString("yyyy-MM-dd");
             var endDate = DateTime.Now.ToString("yyyy-MM-dd");
-            var filePath = @"c:\ascii.txt";
+            var filePath = string.Format("c:\\ascii_Validate_{0}.txt", DateTime.Now.ToString("yyyyMMdd"));
             var allData = CommonBll.GetEverydayData(filePath, startDate,endDate);
             List<Task> tasks = new List<Task>();
             for (int j = 1; j <= 4; j++)
