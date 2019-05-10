@@ -10,9 +10,6 @@ namespace DataAccess
 {
     public class StockDal : DataAccessBase
     {
-        /// <summary>
-        /// 保存ExamSet
-        /// </summary>
         public List<Stock> GetAllStock()
         {
             return CurrentConnectStringContext.StoredProcedure("StockAnalysis_Stock_Read").QueryMany<Stock>();
