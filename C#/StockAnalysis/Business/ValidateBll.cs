@@ -35,7 +35,6 @@ namespace Business
                 tasks.Clear();
             }
             Console.WriteLine("全部执行完成");
-            Console.ReadLine();
         }
 
         private void Analysis(List<EverydayData> allData, string startDate, string endDate, int reduceDay, int analysisTypeId)

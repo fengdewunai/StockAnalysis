@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccess;
 using Model;
 
 namespace Business
 {
     public class UpAnalysisStockBll
     {
+        public static StockDal stockDal = new StockDal();
+
         public List<EverydayData> GetTopPoint(List<EverydayData> datas)
         {
             var result = new List<EverydayData>();
@@ -79,7 +82,7 @@ namespace Business
                         volume3 = topList[topList.Count - 3].Volume;
                     }
                     var topAverage = (max1 + max2 + max3) / 3;
-                    if (CommonValidate(pChangeAverage) && lastData1.ClosePrice > topAverage && lastData2.ClosePrice < topAverage && lastData1.Volume > lastData2.Volume && pChangeAverage > 5 && pChangeAverage<12)
+                    if (lastData1.ClosePrice > topAverage && lastData2.ClosePrice < topAverage && lastData1.Volume > lastData2.Volume && pChangeAverage > 5 && pChangeAverage<12)
                     {
                         return true;
                     }
@@ -90,9 +93,55 @@ namespace Business
             
         }
 
-        private bool CommonValidate(double pChangeAverage)
+        public void GetContinueUpCount(List<EverydayData> everydayDatas)
         {
-            return pChangeAverage > 10 && pChangeAverage < 15;
+            var result = new Dictionary<int, int>();
+            var datas = everydayDatas.Where(x=>Convert.ToDateTime(x.CurrentDate) > DateTime.Now.AddDays(-300)).OrderBy(x=>x.CurrentDate).ToList();
+            var continueCount = 0;
+            for (int i = 1; i < datas.Count; i++)
+            {
+                if (datas[i].ClosePrice > datas[i - 1].ClosePrice)
+                {
+                    continueCount++;
+                }
+                else
+                {
+                    if (continueCount > 0)
+                    {
+                        if (result.ContainsKey(continueCount))
+                        {
+                            result[continueCount] = result[continueCount] + 1;
+                        }
+                        else
+                        {
+                            result.Add(continueCount, 1);
+                        }
+                    }
+                    continueCount = 0;
+                }
+            }
+            foreach (var dic in result.OrderBy(x => x.Key))
+            {
+                Console.WriteLine("{0}：{1}",dic.Key,dic.Value);
+            }
+        }
+
+        public int GetCurrentContinueUpDay(List<EverydayData> everydayDatas)
+        {
+            var result = 0;
+            var datas = everydayDatas.OrderByDescending(x => x.CurrentDate).ToList();
+            for (int i = 1; i < datas.Count; i++)
+            {
+                if (datas[i].ClosePrice > datas[i - 1].ClosePrice)
+                {
+                    result++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return result;
         }
     }
 }

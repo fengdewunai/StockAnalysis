@@ -32,7 +32,6 @@ namespace Business
                 Console.WriteLine("code:{0},count:{1}", resultGroup.Key, resultGroup.ToList().Count);
             }
             Console.WriteLine("全部执行完成");
-            Console.ReadLine();
         }
         private void Analysis(List<EverydayData> allData, string startDate, string endDate, int reduceDay, int analysisTypeId)
         {

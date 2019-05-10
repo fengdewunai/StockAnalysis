@@ -56,6 +56,7 @@
     <Compile Include="ExpectBll.cs" />
     <Compile Include="OverallSituationBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StockBll.cs" />
     <Compile Include="UpAnalysisStockBll.cs" />
     <Compile Include="ValidateBll.cs" />
   </ItemGroup>
