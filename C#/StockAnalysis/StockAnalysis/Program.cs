@@ -18,23 +18,22 @@ namespace StockAnalysis
         {
             var stockBll = new StockBll();
 
-            //var expectBll = new ExpectBll();
-            //expectBll.Expect();
+            var expectBll = new ExpectBll();
+            expectBll.Expect();
 
             //var validateBll = new ValidateBll();
             //validateBll.Validate();
 
 
-            var datas = stockBll.GetEveryDayDataByCode("601155");
-            var upAnalysisStockBll = new UpAnalysisStockBll();
-            upAnalysisStockBll.GetContinueUpCount(datas);
-            Console.WriteLine("========================================");
-            var downAnalysisStockBll = new DownAnalysisStockBll();
-            downAnalysisStockBll.GetContinueDownCount(datas);
-
-            var continueUp = upAnalysisStockBll.GetCurrentContinueUpDay(datas);
-            var continueDown = downAnalysisStockBll.GetCurrentContinueDownDay(datas);
-            Console.WriteLine("上：{0}，下：{1}", continueUp, continueDown);
+            //var datas = stockBll.GetEveryDayDataByCode("601155");
+            //var upAnalysisStockBll = new UpAnalysisStockBll();
+            //upAnalysisStockBll.GetContinueUpCount(datas);
+            //Console.WriteLine("========================================");
+            //var downAnalysisStockBll = new DownAnalysisStockBll();
+            //downAnalysisStockBll.GetContinueDownCount(datas);
+            //var continueUp = upAnalysisStockBll.GetCurrentContinueUpDay(datas);
+            //var continueDown = downAnalysisStockBll.GetCurrentContinueDownDay(datas);
+            //Console.WriteLine("上：{0}，下：{1}", continueUp, continueDown);
 
             Console.ReadLine();
 

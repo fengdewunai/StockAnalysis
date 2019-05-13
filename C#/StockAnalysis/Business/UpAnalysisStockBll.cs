@@ -28,49 +28,12 @@ namespace Business
 
         public bool IsUp(List<EverydayData> topList, List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3, int typeId)
         {
-            var pChangeAverage = topList.Skip(Math.Max(0, topList.Count - 7)).Sum(x => x.P_Change);
+            var pChangeAverage = topList.Skip(Math.Max(0, topList.Count - 3)).Sum(x => x.P_Change);
             double max1 = 0, max2 = 0, max3 = 0;
             switch (typeId)
             {
                 case 1:
-                    
-                    if (topList.Count >= 3)
-                    {
-                        max1 = topList[topList.Count - 1].ClosePrice;
-                        max2 = topList[topList.Count - 2].ClosePrice;
-                        max3 = topList[topList.Count - 3].ClosePrice;
-                    }
-                    if (max1 >= max2 && max2 > max3 && lastData1.ClosePrice > max1 && lastData2.ClosePrice > max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
-                    {
-                        return true;
-                    }
-                    return false;
-                case 2:
-                    if (topList.Count >= 3)
-                    {
-                        max1 = topList[topList.Count - 1].ClosePrice;
-                        max2 = topList[topList.Count - 2].ClosePrice;
-                        max3 = topList[topList.Count - 3].ClosePrice;
-                    }
-                    if (max1 >= max2 && max1 > max3 && lastData1.ClosePrice > max1 && lastData2.ClosePrice > max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
-                    {
-                        return true;
-                    }
-                    return false;
-                case 3:
-                    if (topList.Count >= 3)
-                    {
-                        max1 = topList[topList.Count - 1].ClosePrice;
-                        max2 = topList[topList.Count - 2].ClosePrice;
-                        max3 = topList[topList.Count - 3].ClosePrice;
-                    }
-
-                    if (max1 >= max2 && max2 > max3 && lastData1.ClosePrice > max1 && lastData2.ClosePrice > max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume)
-                    {
-                        return true;
-                    }
-                    return false;
-                case 4:
+                {
                     double volume1 = 0, volume2 = 0, volume3 = 0;
                     if (topList.Count >= 3)
                     {
@@ -82,11 +45,38 @@ namespace Business
                         volume3 = topList[topList.Count - 3].Volume;
                     }
                     var topAverage = (max1 + max2 + max3) / 3;
-                    if (lastData1.ClosePrice > topAverage && lastData2.ClosePrice < topAverage && lastData1.Volume > lastData2.Volume && pChangeAverage > 5 && pChangeAverage<12)
+                    if (CommonValidate(topList, datas, lastData1, lastData2, lastData3) && lastData1.ClosePrice > topAverage && lastData2.ClosePrice > topAverage && lastData3.ClosePrice < topAverage && lastData1.ClosePrice > lastData2.ClosePrice && lastData1.Volume > lastData2.Volume && pChangeAverage > 5 && pChangeAverage < 12)
                     {
                         return true;
                     }
                     return false;
+                }
+                case 2:
+                {
+                    double volume1 = 0, volume2 = 0, volume3 = 0;
+                    if (topList.Count >= 3)
+                    {
+                        max1 = topList[topList.Count - 1].ClosePrice;
+                        volume1 = topList[topList.Count - 1].Volume;
+                        max2 = topList[topList.Count - 2].ClosePrice;
+                        volume2 = topList[topList.Count - 2].Volume;
+                        max3 = topList[topList.Count - 3].ClosePrice;
+                        volume3 = topList[topList.Count - 3].Volume;
+                    }
+                    var topAverage = (max1 + max2 + max3) / 3;
+                    if (CommonValidate(topList, datas, lastData1, lastData2, lastData3) && lastData1.ClosePrice > max1 && lastData2.ClosePrice < max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume && pChangeAverage > 5 && pChangeAverage < 15)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                case 3:
+                    return false;
+                case 4:
+                {
+                    return false;
+                }
+                    
                 default:
                     return false;
             }
@@ -142,6 +132,11 @@ namespace Business
                 }
             }
             return result;
+        }
+
+        private bool CommonValidate(List<EverydayData> topList, List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3)
+        {
+            return Math.Abs(lastData2.ClosePrice-lastData2.OpenPrice)/ lastData2.ClosePrice > 0.016 && lastData1.Volume > lastData2.Volume && lastData1.ClosePrice > lastData3.ClosePrice;
         }
     }
 }

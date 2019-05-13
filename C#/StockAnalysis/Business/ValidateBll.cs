@@ -14,7 +14,7 @@ namespace Business
     public class ValidateBll
     {
         private static List<string> allResult = new List<string>();
-        private static int expectDayRang = 3;
+        private static int expectDayRang = 5;
         public void Validate()
         {
             var startDate = DateTime.Now.AddDays(-80).ToString("yyyy-MM-dd");
@@ -78,7 +78,7 @@ namespace Business
                 index++;
             }
             allResult.AddRange(result);
-            Console.WriteLine(string.Format("日期：{0} 至 {1}，共找到{2}，正确{3}，错误{4},正确率：{5}", startDate, endDate, result.Count, expectTrue.Count, expectFail.Count, expectTrue.Count * 100 / result.Count), MessageType.Info);
+            Console.WriteLine(string.Format("日期：{0} 至 {1}，共找到{2}，正确{3}，错误{4},正确率：{5}", startDate, endDate, result.Count, expectTrue.Count, expectFail.Count, result.Count == 0 ? 0 : expectTrue.Count * 100 / result.Count), MessageType.Info);
         }
     }
 }
