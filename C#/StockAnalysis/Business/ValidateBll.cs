@@ -22,7 +22,7 @@ namespace Business
             var filePath = string.Format("c:\\ascii_Validate_{0}.txt", DateTime.Now.ToString("yyyyMMdd"));
             var allData = CommonBll.GetEverydayData(filePath, startDate,endDate);
             List<Task> tasks = new List<Task>();
-            for (int j = 1; j <= 4; j++)
+            for (int j = 1; j <= 2; j++)
             {
                 var typeId = j;
                 Console.WriteLine("IsUp{0}方法开始", typeId);
@@ -54,7 +54,7 @@ namespace Business
                     var analysisData = dataList.Take(dataList.Count - expectDayRang).ToList();
                     var expectData = dataList.Skip(dataList.Count - expectDayRang).ToList();
                     var topList = upStockBll.GetTopPoint(analysisData);
-                    var isUp = upStockBll.IsUp(topList, analysisData, analysisData.Last(), analysisData[analysisData.Count - 2], analysisData[analysisData.Count - 3], analysisTypeId);
+                    var isUp = upStockBll.IsUp(topList, analysisData, analysisTypeId);
                     if (isUp)
                     {
                         result.Add(group.Key);

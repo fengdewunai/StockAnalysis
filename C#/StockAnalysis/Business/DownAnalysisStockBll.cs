@@ -12,6 +12,10 @@ namespace Business
     {
         public static StockDal stockDal = new StockDal();
 
+        /// <summary>
+        /// 历史连续下降的天数集合
+        /// </summary>
+        /// <param name="everydayDatas"></param>
         public void GetContinueDownCount(List<EverydayData> everydayDatas)
         {
             var result = new Dictionary<int, int>();
@@ -45,6 +49,11 @@ namespace Business
             }
         }
 
+        /// <summary>
+        /// 到目前为止连续下降的天数
+        /// </summary>
+        /// <param name="everydayDatas"></param>
+        /// <returns></returns>
         public int GetCurrentContinueDownDay(List<EverydayData> everydayDatas)
         {
             var result = 0;

@@ -5,13 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccess;
 using Model;
+using Model.Enum;
 
 namespace Business
 {
+    /// <summary>
+    /// 上升分析
+    /// </summary>
     public class UpAnalysisStockBll
     {
         public static StockDal stockDal = new StockDal();
 
+        /// <summary>
+        /// 获取峰值集合
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
         public List<EverydayData> GetTopPoint(List<EverydayData> datas)
         {
             var result = new List<EverydayData>();
@@ -26,45 +35,46 @@ namespace Business
             return result;
         }
 
-        public bool IsUp(List<EverydayData> topList, List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3, int typeId)
+        /// <summary>
+        /// 判断是否上升
+        /// </summary>
+        /// <param name="topList"></param>
+        /// <param name="datas"></param>
+        /// <param name="typeId"></param>
+        /// <returns></returns>
+        public bool IsUp(List<EverydayData> topList, List<EverydayData> datas, int typeId)
         {
-            var pChangeAverage = topList.Skip(Math.Max(0, topList.Count - 3)).Sum(x => x.P_Change);
+            var pChangeAverage = datas.Skip(Math.Max(0, datas.Count - 10)).Sum(x => x.P_Change);
             double max1 = 0, max2 = 0, max3 = 0;
+            var lastData1 = datas[datas.Count - 1];
+            var lastData2 = datas[datas.Count - 2];
+            var lastData3 = datas[datas.Count - 3];
             switch (typeId)
             {
-                case 1:
+                case (int)UpTypeEnum.UpTwoTop:
                 {
-                    double volume1 = 0, volume2 = 0, volume3 = 0;
                     if (topList.Count >= 3)
                     {
                         max1 = topList[topList.Count - 1].ClosePrice;
-                        volume1 = topList[topList.Count - 1].Volume;
                         max2 = topList[topList.Count - 2].ClosePrice;
-                        volume2 = topList[topList.Count - 2].Volume;
                         max3 = topList[topList.Count - 3].ClosePrice;
-                        volume3 = topList[topList.Count - 3].Volume;
                     }
                     var topAverage = (max1 + max2 + max3) / 3;
-                    if (CommonValidate(topList, datas, lastData1, lastData2, lastData3) && lastData1.ClosePrice > topAverage && lastData2.ClosePrice > topAverage && lastData3.ClosePrice < topAverage && lastData1.ClosePrice > lastData2.ClosePrice && lastData1.Volume > lastData2.Volume && pChangeAverage > 5 && pChangeAverage < 12)
+                    if (CommonValidate(topList, datas, lastData1, lastData2, lastData3) 
+                        && lastData1.ClosePrice > lastData2.ClosePrice && lastData1.ClosePrice > lastData3.ClosePrice 
+                        && lastData1.ClosePrice > max1 && lastData1.ClosePrice > max2 
+                        && pChangeAverage > 5 && pChangeAverage < 15)
                     {
                         return true;
                     }
                     return false;
                 }
-                case 2:
+                case (int)UpTypeEnum.HasUpWindow:
                 {
                     double volume1 = 0, volume2 = 0, volume3 = 0;
-                    if (topList.Count >= 3)
-                    {
-                        max1 = topList[topList.Count - 1].ClosePrice;
-                        volume1 = topList[topList.Count - 1].Volume;
-                        max2 = topList[topList.Count - 2].ClosePrice;
-                        volume2 = topList[topList.Count - 2].Volume;
-                        max3 = topList[topList.Count - 3].ClosePrice;
-                        volume3 = topList[topList.Count - 3].Volume;
-                    }
-                    var topAverage = (max1 + max2 + max3) / 3;
-                    if (CommonValidate(topList, datas, lastData1, lastData2, lastData3) && lastData1.ClosePrice > max1 && lastData2.ClosePrice < max1 && lastData3.ClosePrice < max1 && lastData1.Volume > lastData2.Volume && pChangeAverage > 5 && pChangeAverage < 15)
+                    if (CommonValidate(topList, datas, lastData1, lastData2, lastData3) 
+                        && lastData1.OpenPrice > lastData2.ClosePrice && lastData1.P_Change > 0
+                        && pChangeAverage > 5 && pChangeAverage < 15)
                     {
                         return true;
                     }
@@ -83,6 +93,10 @@ namespace Business
             
         }
 
+        /// <summary>
+        /// 历史连续上升的天数集合
+        /// </summary>
+        /// <param name="everydayDatas"></param>
         public void GetContinueUpCount(List<EverydayData> everydayDatas)
         {
             var result = new Dictionary<int, int>();
@@ -116,6 +130,11 @@ namespace Business
             }
         }
 
+        /// <summary>
+        /// 到目前为止连续上升的天数
+        /// </summary>
+        /// <param name="everydayDatas"></param>
+        /// <returns></returns>
         public int GetCurrentContinueUpDay(List<EverydayData> everydayDatas)
         {
             var result = 0;
@@ -134,9 +153,19 @@ namespace Business
             return result;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="topList">峰值集合</param>
+        /// <param name="datas">数据集合</param>
+        /// <param name="lastData1">最后一天数据</param>
+        /// <param name="lastData2">倒数第二天数据</param>
+        /// <param name="lastData3">倒数第三条数据</param>
+        /// <returns></returns>
         private bool CommonValidate(List<EverydayData> topList, List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3)
         {
-            return Math.Abs(lastData2.ClosePrice-lastData2.OpenPrice)/ lastData2.ClosePrice > 0.016 && lastData1.Volume > lastData2.Volume && lastData1.ClosePrice > lastData3.ClosePrice;
+            var upContinueDays = GetCurrentContinueUpDay(datas);
+            return Math.Abs(lastData2.ClosePrice-lastData2.OpenPrice)/ lastData2.ClosePrice > 0.016  && upContinueDays <=3 && topList.Max(x=>x.Volume) > 100000;
         }
     }
 }

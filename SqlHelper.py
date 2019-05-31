@@ -5,8 +5,8 @@ class SqlHelper:
     def __init__(self):
         # 连接数据库
         self.connect = pymysql.Connect(
-            host='cdb-876nz9gn.gz.tencentcdb.com',
-            port=10106,
+            host='cdb-m03voo9x.gz.tencentcdb.com',
+            port=10103,
             user='root',
             passwd='gaofeng111',
             db='stockanalysis',

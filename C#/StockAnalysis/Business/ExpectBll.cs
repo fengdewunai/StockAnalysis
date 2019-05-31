@@ -47,7 +47,7 @@ namespace Business
                     var dataList = groupList.Take(groupList.Count - reduceDay).OrderBy(x => x.CurrentDate).ToList();
                     var analysisData = dataList;
                     var topList = upStockBll.GetTopPoint(analysisData);
-                    var isUp = upStockBll.IsUp(topList, analysisData, analysisData.Last(), analysisData[analysisData.Count - 2], analysisData[analysisData.Count - 3], analysisTypeId);
+                    var isUp = upStockBll.IsUp(topList, analysisData, analysisTypeId);
                     if (isUp)
                     {
                         result.Add(group.Key);
