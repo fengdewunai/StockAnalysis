@@ -14,7 +14,7 @@ namespace Business
     public class ValidateBll
     {
         private static List<string> allResult = new List<string>();
-        private static int expectDayRang = 5;
+        private static int expectDayRang = 3;
         public void Validate()
         {
             var startDate = DateTime.Now.AddDays(-80).ToString("yyyy-MM-dd");

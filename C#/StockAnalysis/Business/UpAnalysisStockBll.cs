@@ -73,8 +73,7 @@ namespace Business
                 {
                     double volume1 = 0, volume2 = 0, volume3 = 0;
                     if (CommonValidate(topList, datas, lastData1, lastData2, lastData3) 
-                        && lastData1.OpenPrice > lastData2.ClosePrice && lastData1.P_Change > 0
-                        && pChangeAverage > 5 && pChangeAverage < 15)
+                        && lastData1.LowPrice > lastData2.HighPrice && lastData1.P_Change > 0)
                     {
                         return true;
                     }
@@ -165,7 +164,7 @@ namespace Business
         private bool CommonValidate(List<EverydayData> topList, List<EverydayData> datas, EverydayData lastData1, EverydayData lastData2, EverydayData lastData3)
         {
             var upContinueDays = GetCurrentContinueUpDay(datas);
-            return Math.Abs(lastData2.ClosePrice-lastData2.OpenPrice)/ lastData2.ClosePrice > 0.016  && upContinueDays <=3 && topList.Max(x=>x.Volume) > 100000;
+            return Math.Abs(lastData2.ClosePrice-lastData2.OpenPrice)/ lastData2.ClosePrice > 0.016  && upContinueDays <=4 && topList.Max(x=>x.Volume) > 100000;
         }
     }
 }
