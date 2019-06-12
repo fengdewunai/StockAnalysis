@@ -60,11 +60,18 @@
   <ItemGroup>
     <Compile Include="DataAccessBase.cs" />
     <Compile Include="FluentData.cs" />
+    <Compile Include="Helper\SocketHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{4c087eae-87ac-4d19-ac19-b87d1167411b}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

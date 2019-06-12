@@ -51,6 +51,7 @@
     <Compile Include="EverydayData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stock.cs" />
+    <Compile Include="ValidateResultModel.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

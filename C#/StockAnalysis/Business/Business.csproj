@@ -54,6 +54,7 @@
     <Compile Include="CommonBll.cs" />
     <Compile Include="DownAnalysisStockBll.cs" />
     <Compile Include="ExpectBll.cs" />
+    <Compile Include="Interface\IAnalysisStockBll.cs" />
     <Compile Include="OverallSituationBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StockBll.cs" />
