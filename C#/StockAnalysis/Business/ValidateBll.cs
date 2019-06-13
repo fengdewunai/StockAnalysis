@@ -50,14 +50,14 @@ namespace Business
                 for (int i = 0; i <= 9; i++)
                 {
                     var index = i;
-                    tasks.Add(Task.Factory.StartNew(() => { Analysis(allData, startDate, DateTime.Now.AddDays(-index - expectDayRang).ToString("yyyy-MM-dd"), index, typeId, bllTypeId); }));
+                    tasks.Add(Task.Factory.StartNew(() => { Analysis(allData, startDate, index, typeId, bllTypeId); }));
                 }
                 Task.WaitAll(tasks.ToArray());
                 tasks.Clear();
             }
         }
 
-        private void Analysis(List<EverydayData> allData, string startDate, string endDate, int reduceDay, int analysisTypeId, int bllTypeId)
+        private void Analysis(List<EverydayData> allData, string startDate, int reduceDay, int analysisTypeId, int bllTypeId)
         {
             var expectTrue = new List<string>();
             var expectFail = new List<string>();
@@ -74,6 +74,7 @@ namespace Business
                     upStockBll = new DownAnalysisStockBll();
                     break;
             }
+            var endDate = "";
             foreach (var group in dataGroup)
             {
                 try
@@ -83,6 +84,7 @@ namespace Business
                     var analysisData = dataList.Take(dataList.Count - expectDayRang).ToList();
                     var expectData = dataList.Skip(dataList.Count - expectDayRang).ToList();
                     var topList = SocketHelper.GetTopPoint(analysisData);
+                    endDate = analysisData.Last().CurrentDate;
                     var isUp = upStockBll.IsUp(topList, analysisData, analysisTypeId);
                     if (isUp)
                     {

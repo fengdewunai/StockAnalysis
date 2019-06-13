@@ -18,11 +18,11 @@ namespace StockAnalysis
         {
             var stockBll = new StockBll();
 
-            //var expectBll = new ExpectBll();
-            //expectBll.Expect();
+            var expectBll = new ExpectBll();
+            expectBll.Expect();
 
-            var validateBll = new ValidateBll();
-            validateBll.Validate();
+            //var validateBll = new ValidateBll();
+            //validateBll.Validate();
 
 
             //var datas = stockBll.GetEveryDayDataByCode("601155");

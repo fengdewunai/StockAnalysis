@@ -15,7 +15,7 @@ namespace Business
 
         public bool IsUp(List<EverydayData> topList, List<EverydayData> datas, int typeId)
         {
-            var dataRange = Math.Max(0, datas.Count - 20);
+            var dataRange = Math.Max(0, datas.Count - 60);
             var pChangeAverage = datas.Skip(dataRange).Sum(x => x.P_Change);
             var loweastPrice = datas.Skip(dataRange).Min(x => x.ClosePrice);
             var averageVolume = datas.Skip(dataRange).Average(x => x.Volume);
@@ -26,8 +26,10 @@ namespace Business
             {
                 return false;
             }
-            if (Math.Abs((lastData1.ClosePrice - lastData1.OpenPrice) / (lastData1.HighPrice - lastData1.LowPrice)) <  0.4
-                && lastData1.Volume > averageVolume
+            var topPrice = lastData1.ClosePrice > lastData1.OpenPrice ? lastData1.OpenPrice : lastData1.ClosePrice;
+            var changePrice = lastData1.HighPrice - lastData1.LowPrice;
+            if (Math.Abs((lastData1.ClosePrice - lastData1.OpenPrice) / changePrice) <  0.4
+                && (lastData1.HighPrice - topPrice) / changePrice < 0.4
                 )
             {
                 return true;
