@@ -28,7 +28,7 @@ namespace Business
             
             Console.WriteLine();
             Console.WriteLine("DownAnalysisStockBll的IsUp方法开始");
-            StartAnalysis(allData, startDate, 2, 1);
+            StartAnalysis(allData, startDate, 2, 3);
 
             Console.WriteLine("全部执行完成");
         }

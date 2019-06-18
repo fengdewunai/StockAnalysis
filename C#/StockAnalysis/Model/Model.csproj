@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enum\DownTypeEnum.cs" />
     <Compile Include="Enum\UpTypeEnum.cs" />
     <Compile Include="EverydayData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

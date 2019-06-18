@@ -27,15 +27,15 @@ namespace Business
             StartAnalysis(allData, startDate, 1, 2);
             Console.WriteLine();
             Console.WriteLine("DownAnalysisStockBll的IsUp方法开始");
-            StartAnalysis(allData, startDate, 2, 1);
+            StartAnalysis(allData, startDate, 2, 3);
 
-            Console.WriteLine("多次选出的正确概率");
-            var group = allResult.GroupBy(x => new {x.StockCode, x.EndDate}).Where(x => x.ToList().Count > 1);
-            foreach (var data in group)
-            {
-                var list = data.ToList();
-                Console.WriteLine(string.Format("日期：{0} 至 {1}，共找到{2}，正确{3}，错误{4},正确率：{5}", list[0].StartDate, data.Key.EndDate, list.Count, list.Count(x=>x.ValidateResult), list.Count(x => !x.ValidateResult), list.Count == 0 ? 0 : list.Count(x => x.ValidateResult) * 100 / list.Count), MessageType.Info);
-            }
+            //Console.WriteLine("多次选出的正确概率");
+            //var group = allResult.GroupBy(x => new {x.StockCode, x.EndDate}).Where(x => x.ToList().Count > 1);
+            //foreach (var data in group)
+            //{
+            //    var list = data.ToList();
+            //    Console.WriteLine(string.Format("日期：{0} 至 {1}，共找到{2}，正确{3}，错误{4},正确率：{5}", list[0].StartDate, data.Key.EndDate, list.Count, list.Count(x=>x.ValidateResult), list.Count(x => !x.ValidateResult), list.Count == 0 ? 0 : list.Count(x => x.ValidateResult) * 100 / list.Count), MessageType.Info);
+            //}
 
             Console.WriteLine("全部执行完成");
         }

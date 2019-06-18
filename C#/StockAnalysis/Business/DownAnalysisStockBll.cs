@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Business.Interface;
 using DataAccess;
 using Model;
+using Model.Enum;
 
 namespace Business
 {
@@ -18,22 +19,54 @@ namespace Business
             var dataRange = Math.Max(0, datas.Count - 60);
             var pChangeAverage = datas.Skip(dataRange).Sum(x => x.P_Change);
             var loweastPrice = datas.Skip(dataRange).Min(x => x.ClosePrice);
-            var averageVolume = datas.Skip(dataRange).Average(x => x.Volume);
             var lastData1 = datas[datas.Count - 1];
             var lastData2 = datas[datas.Count - 2];
             var lastData3 = datas[datas.Count - 3];
-            if (loweastPrice < lastData2.ClosePrice || pChangeAverage > -20)
+            switch (typeId)
             {
-                return false;
+                case (int) DownTypeEnum.StarLine:
+                {
+                    if (loweastPrice < lastData2.ClosePrice || pChangeAverage > -20)
+                    {
+                        return false;
+                    }
+                    var topPrice = lastData1.ClosePrice > lastData1.OpenPrice ? lastData1.OpenPrice : lastData1.ClosePrice;
+                    var changePrice = lastData1.HighPrice - lastData1.LowPrice;
+                    if (Math.Abs((lastData1.ClosePrice - lastData1.OpenPrice) / changePrice) < 0.4
+                        && (lastData1.HighPrice - topPrice) / changePrice < 0.4
+                    )
+                    {
+                        return true;
+                    }
+                    break;
+                 }
+                case (int)DownTypeEnum.ContinueDown:
+                {
+                    if (GetCurrentContinueDownDay(datas) >= 5)
+                    {
+                        return true;
+                    }
+                    break;
+                }
+                case (int) DownTypeEnum.StableThenUp:
+                {
+                    if (topList.Count < 5)
+                    {
+                        return false;
+                    }
+                    var preTopList = topList.Take(topList.Count-2);
+                    var preMaxTop = preTopList.Max(x => x.ClosePrice);
+                    var preMinTop = preTopList.Min(x => x.ClosePrice);
+                    var lastMaxTop = topList.Skip(topList.Count - 3).Max(x => x.ClosePrice);
+                    if ((preMaxTop - preMinTop) / preMinTop < 0.1 && (lastMaxTop - preMaxTop)/preMaxTop > 0.1)
+                    {
+                        return true;
+                    }
+                    break;
+                }
+
             }
-            var topPrice = lastData1.ClosePrice > lastData1.OpenPrice ? lastData1.OpenPrice : lastData1.ClosePrice;
-            var changePrice = lastData1.HighPrice - lastData1.LowPrice;
-            if (Math.Abs((lastData1.ClosePrice - lastData1.OpenPrice) / changePrice) <  0.4
-                && (lastData1.HighPrice - topPrice) / changePrice < 0.4
-                )
-            {
-                return true;
-            }
+            
             return false;
         }
 
